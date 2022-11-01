@@ -103,7 +103,7 @@ router.post("/login", async (req, res) => {
 
 router.get("/validuser", authenticate, async (req, res) => {
   try {
-    const ValidUserOne = await userdb.findOne({ _id: req.userId });
+    const ValidUserOne = await  userdb.findOne({ _id: req.userId });
     res.status(201).json({ status: 201, ValidUserOne });
   } catch (error) {
     res.status(401).json({ status: 401, error });
@@ -122,9 +122,9 @@ router.get("/logout", authenticate, async (req, res) => {
 
     req.rootUser.save();
 
-    res.status(201).json({ status: 201 });
+    res.status(201).json({status:201});
   } catch (error) {
-    res.status(401).json({ status: 401, error });
+    res.status(201).json({ status: 401, error });
   }
 });
 
