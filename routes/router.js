@@ -3,6 +3,8 @@ const router = express.Router();
 const userdb = require("../models/userSchema");
 const bcrypt = require("bcryptjs");
 const authenticate = require("../middleware/authenticate");
+
+
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 
@@ -25,7 +27,7 @@ router.get("/", function (req, res) {
 //for user Registration
 
 router.post("/register", async (req, res) => {
-  const { fname, email, password, cpassword } = req.body;
+  const { fname, email, password, cpassword} = req.body;
 
   if (!fname || !email || !password || !cpassword) {
     res.status(422).json({ error: "fill all the details" });
@@ -46,6 +48,7 @@ router.post("/register", async (req, res) => {
         email,
         password,
         cpassword,
+        
       });
 
       // here password hasing
@@ -54,6 +57,45 @@ router.post("/register", async (req, res) => {
 
       // console.log(storeData);
       res.status(201).json({ status: 201, storeData });
+    }
+  } catch (error) {
+    res.status(500).json(error);
+    console.log("catch block error");
+  }
+});
+
+//for admin registration
+router.post("/admin/register", async (req, res) => {
+  const { fname, email, password, cpassword } = req.body;
+
+  if (!fname || !email || !password || !cpassword) {
+    res.status(422).json({ error: "fill all the details" });
+  }
+
+  try {
+    const preuser = await userdb.findOne({ email: email });
+
+    if (preuser) {
+      res.status(422).json({ error: "mentor already registered" });
+    } else if (password !== cpassword) {
+      res
+        .status(400)
+        .json({ error: "Password and Confirm Password Not Match" });
+    } else {
+      const finalUser = new userdb({
+        fname,
+        email,
+        password,
+        cpassword,
+        role:'mentor'
+      });
+
+      // here password hasing
+
+      const storeData = await finalUser.save();
+
+      // console.log(storeData);
+      res.status(201).json({ status: 201, storeData,message:"mentor registered successfully" });
     }
   } catch (error) {
     res.status(500).json(error);
@@ -99,12 +141,57 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.post("/admin/login", async (req, res) => {
+  //console.log(req.body);
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    res.status(422).json({ error: "fill all the details" });
+  }
+  try {
+    const userValid = await userdb.findOne({ email: email });
+    if (userValid) {
+      const isMatch = await bcrypt.compare(password, userValid.password);
+
+      if (!isMatch&& userValid.role!=='admin') {
+        res.status(422).json({ error: "invalid details" });
+      } else {
+        //token generate
+        const token = await userValid.generateAuthtoken();
+
+        //cookie generate
+
+        res.cookie("usercookie", token, {
+          expires: new Date(Date.now() + 9000000),
+          httpOnly: true,
+        });
+        const result = {
+          userValid,
+          token,
+        };
+        res.status(201).json({ status: 201, result });
+      }
+    }
+  } catch (error) {
+    res.status(401).json({ status: 401, error });
+  }
+});
+
 //user valid
 
 router.get("/validuser", authenticate, async (req, res) => {
   try {
     const ValidUserOne = await  userdb.findOne({ _id: req.userId });
     res.status(201).json({ status: 201, ValidUserOne });
+  } catch (error) {
+    res.status(401).json({ status: 401, error });
+  }
+});
+
+router.get("/validmentor",authenticate, async (req, res) => {
+  try {
+    const ValidMentorOne = await  userdb.findOne({ _id: req.userId});
+    res.status(201).json({ status: 201, ValidMentorOne });
   } catch (error) {
     res.status(401).json({ status: 401, error });
   }
