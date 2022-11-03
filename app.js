@@ -3,6 +3,8 @@ const express = require("express");
 const cookiParser=require("cookie-parser")
 require("./db/conn");
 const router = require("./routes/router");
+
+
 const cors = require("cors");
 
 
@@ -14,7 +16,8 @@ app.use(express.json());
 app.use(cookiParser());
  app.use(cors());
 
-app.use(router);
+ app.use(router);
+
 
 app.listen(port,()=>{
     console.log(`server started at port no:${port}`)

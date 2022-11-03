@@ -20,9 +20,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-router.get("/", function (req, res) {
-  res.send("Hello World");
-});
+
 
 //for user Registration
 
@@ -218,7 +216,7 @@ router.get("/logout", authenticate, async (req, res) => {
 
     res.status(201).json({status:201});
   } catch (error) {
-    res.status(201).json({ status: 401, error });
+    res.status(401).json({ status: 401, error });
   }
 });
 
@@ -354,7 +352,7 @@ router.get("/forgotpassword/:id/:token", async (req, res) => {
     res.status(401).json({ status: 401, error });
   }
 });
-router.get("mentor/forgotpassword/:id/:token", async (req, res) => {
+router.get("/mentor/forgotpassword/:id/:token", async (req, res) => {
   const { id, token } = req.params;
 
   try {
@@ -403,6 +401,13 @@ router.post("/:id/:token", async (req, res) => {
     res.status(401).json({ status: 401, error });
   }
 });
+
+
+
+//QueriesStudent
+
+
+
 
 module.exports = router;
 
