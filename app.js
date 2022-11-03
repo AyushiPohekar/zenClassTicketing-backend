@@ -2,7 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const cookiParser=require("cookie-parser")
 require("./db/conn");
-const router = require("./routes/router");
+const usersRouter = require("./routes/users.router");
+const queryRouter = require("./routes/query.router");
 
 
 const cors = require("cors");
@@ -16,7 +17,10 @@ app.use(express.json());
 app.use(cookiParser());
  app.use(cors());
 
- app.use(router);
+
+ //routers
+app.use('/',usersRouter);
+ app.use('/queries',queryRouter);
 
 
 app.listen(port,()=>{
