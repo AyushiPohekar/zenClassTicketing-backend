@@ -48,7 +48,8 @@ const userSchema=new mongoose.Schema({
     verifytoken:{
         type:String,
   
-    }
+    },
+   
 });
 
 
@@ -79,7 +80,8 @@ userSchema.methods.generateAuthtoken=async function(){
   }
 }
 
-//creating model
+
+
 
 const userdb=new mongoose.model("users",userSchema);
 
