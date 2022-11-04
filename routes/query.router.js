@@ -3,10 +3,10 @@ const router = express.Router();
 const { insertquery,getqueries,getQueryById,updateStudentReply,updateStatusClose,deleteQuery } = require("../models/querymodel");
 const bcrypt = require("bcryptjs");
 const authenticate = require("../middleware/authenticate");
-
+const {createNewQueryValidation,replyQueryMessageValidation} =require( '../middleware/formValidation.middleware');
 
 //create new query
-router.post("/", authenticate, async function (req, res) {
+router.post("/",createNewQueryValidation, authenticate, async function (req, res) {
   const { subject, category, subCategory, description, sender, message } =
     req.body;
   console.log(req.userId);
@@ -89,6 +89,7 @@ router.get("/:_id", authenticate, async (req, res) => {
 // update reply message form student
 router.put(
   "/:_id",
+  replyQueryMessageValidation,
 
  authenticate,
   async (req, res) => {

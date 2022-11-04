@@ -46,7 +46,7 @@ const updateStudentReply = ({ _id, message, sender }) => {
       QuerySchema.findOneAndUpdate(
         { _id },
         {
-          status: "OPEN",
+          status1: "OPEN",
           $push: {
             conversations: { message, sender },
           },
@@ -68,7 +68,7 @@ const updateStatusClose = ({ _id, clientId }) => {
    QuerySchema.findOneAndUpdate(
         { _id, clientId },
         {
-          status: "CLOSE",
+          status1: "CLOSE",
         },
         { new: true }
       )

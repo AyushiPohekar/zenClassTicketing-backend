@@ -30,11 +30,18 @@ description: {
     required: true,
     default: Date.now(),
   },
-  status: {
+  status1: {
     type: String,
     maxlength: 30,
     required: true,
-    enum: ["UNASSIGNED", "ASSIGNED", 'RESOLVED', 'OPEN', 'CLOSE', 'REOPEN'],
+    enum: [ 'OPEN', 'CLOSE', 'REOPEN'],
+    default: "OPEN",
+  },
+  status2: {
+    type: String,
+    maxlength: 30,
+    required: true,
+    enum: ["UNASSIGNED", "ASSIGNED", 'RESOLVED'],
     default: "UNASSIGNED",
   },
 
