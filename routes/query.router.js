@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { insertquery,getqueries } = require("../models/querymodel");
+const { insertquery,getqueries,getQueryById,updateStudentReply,updateStatusClose,deleteQuery } = require("../models/querymodel");
 const bcrypt = require("bcryptjs");
 const authenticate = require("../middleware/authenticate");
 
@@ -61,6 +61,94 @@ router.get("/", authenticate, async (req, res) => {
     return res.json({
       status: "success",
       result,
+    });
+  } catch (error) {
+    res.json({ status: "error", message: error.message });
+  }
+});
+
+
+// Get all tickets for a specific user
+router.get("/:_id", authenticate, async (req, res) => {
+  try {
+    const { _id } = req.params;
+
+    const clientId = req.userId;
+    const result = await getQueryById(_id, clientId);
+
+    return res.json({
+      status: "success",
+      result,
+    });
+  } catch (error) {
+    res.json({ status: "error", message: error.message });
+  }
+});
+
+
+// update reply message form student
+router.put(
+  "/:_id",
+
+ authenticate,
+  async (req, res) => {
+    try {
+      const { message, sender } = req.body;
+      const { _id } = req.params;
+      const clientId = req.userId;
+
+      const result = await updateStudentReply({ _id, message, sender });
+
+      if (result._id) {
+        return res.json({
+          status: "success",
+          message: "your message updated",
+        });
+      }
+      res.json({
+        status: "error",
+        message: "Unable to update your message please try again later",
+      });
+    } catch (error) {
+      res.json({ status: "error", message: error.message });
+    }
+  }
+);
+
+// update ticket status to close
+router.patch("/close-query/:_id", authenticate, async (req, res) => {
+  try {
+    const { _id } = req.params;
+    const clientId = req.userId;
+
+    const result = await updateStatusClose({ _id, clientId });
+
+    if (result._id) {
+      return res.json({
+        status: "success",
+        message: "The query has been closed",
+      });
+    }
+    res.json({
+      status: "error",
+      message: "Unable to update the ticket",
+    });
+  } catch (error) {
+    res.json({ status: "error", message: error.message });
+  }
+});
+
+// Delete a ticket
+router.delete("/:_id", authenticate, async (req, res) => {
+  try {
+    const { _id } = req.params;
+    const clientId = req.userId;
+
+    const result = await deleteQuery({ _id, clientId });
+
+    return res.json({
+      status: "success",
+      message: "The query has been deleted",
     });
   } catch (error) {
     res.json({ status: "error", message: error.message });
