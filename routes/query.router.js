@@ -1,13 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { insertquery } = require("../models/querymodel");
+const { insertquery,getqueries } = require("../models/querymodel");
 const bcrypt = require("bcryptjs");
 const authenticate = require("../middleware/authenticate");
 
-router.get("/", authenticate, function (req, res) {
-  res.send("Hello World");
-});
 
+//create new query
 router.post("/", authenticate, async function (req, res) {
   const { subject, category, subCategory, description, sender, message } =
     req.body;
@@ -52,5 +50,23 @@ router.post("/", authenticate, async function (req, res) {
     res.json({ status: "error", message: error.message });
   }
 });
+
+
+// Get all queries for a specific student
+router.get("/", authenticate, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const result = await getqueries(userId);
+
+    return res.json({
+      status: "success",
+      result,
+    });
+  } catch (error) {
+    res.json({ status: "error", message: error.message });
+  }
+});
+
+
 
 module.exports = router;

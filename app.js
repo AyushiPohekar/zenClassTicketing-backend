@@ -20,6 +20,7 @@ app.use(cookiParser());
 
  //routers
 app.use('/',usersRouter);
+
  app.use('/queries',queryRouter);
 
 
