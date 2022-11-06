@@ -1,6 +1,6 @@
 const authenticate = require("../middleware/authenticate");
-const {QuerySchema } = require("./querySchema");
-const{UserSchema}=require('./userSchema')
+const { QuerySchema } = require("./querySchema");
+const { UserSchema } = require("./userSchema");
 const insertquery = (queryObj) => {
   return new Promise((resolve, reject) => {
     try {
@@ -16,8 +16,7 @@ const insertquery = (queryObj) => {
 const getqueries = (clientId) => {
   return new Promise((resolve, reject) => {
     try {
-      QuerySchema
-        .find({clientId})
+      QuerySchema.find({ clientId })
         .then((data) => resolve(data))
         .catch((error) => reject(error));
     } catch (error) {
@@ -28,8 +27,7 @@ const getqueries = (clientId) => {
 const getAdminDashboardQueries = () => {
   return new Promise((resolve, reject) => {
     try {
-      QuerySchema
-        .find({status2:"UNASSIGNED",status1:"OPEN"})
+      QuerySchema.find({ status2: "UNASSIGNED", status1: "OPEN" })
         .then((data) => resolve(data))
         .catch((error) => reject(error));
     } catch (error) {
@@ -38,11 +36,10 @@ const getAdminDashboardQueries = () => {
   });
 };
 
-
 const getQueryById = (_id, clientId) => {
   return new Promise((resolve, reject) => {
     try {
-     QuerySchema.find({ _id, clientId })
+      QuerySchema.find({ _id, clientId })
         .then((data) => resolve(data))
         .catch((error) => reject(error));
     } catch (error) {
@@ -53,7 +50,7 @@ const getQueryById = (_id, clientId) => {
 const getMentorQueryById = (_id) => {
   return new Promise((resolve, reject) => {
     try {
-     QuerySchema.find({ _id})
+      QuerySchema.find({ _id })
         .then((data) => resolve(data))
         .catch((error) => reject(error));
     } catch (error) {
@@ -61,14 +58,14 @@ const getMentorQueryById = (_id) => {
     }
   });
 };
-const getQueryForMentor = ( {_id, clientId} ) => {
-  console.log(_id)
-  console.log(clientId)
+const getQueryForMentor = ({ _id, clientId }) => {
+  console.log(_id);
+  console.log(clientId);
   return new Promise((resolve, reject) => {
     try {
-   QuerySchema.findOneAndUpdate(
+      QuerySchema.findOneAndUpdate(
         { _id, clientId },
-        
+
         {
           status2: "ASSIGNED",
         },
@@ -87,7 +84,8 @@ const getQueryForMentor = ( {_id, clientId} ) => {
 const getUserForQuery = () => {
   return new Promise((resolve, reject) => {
     try {
-    QuerySchema.find().populate("rasiedBy")
+      QuerySchema.find({ status2: "UNASSIGNED", status1: "OPEN" })
+        .populate("rasiedBy")
         .then((data) => resolve(data))
         .catch((error) => reject(error));
     } catch (error) {
@@ -96,16 +94,10 @@ const getUserForQuery = () => {
   });
 };
 
-
-
-
-
-
-
 const updateStatusClose = ({ _id, clientId }) => {
   return new Promise((resolve, reject) => {
     try {
-   QuerySchema.findOneAndUpdate(
+      QuerySchema.findOneAndUpdate(
         { _id, clientId },
         {
           status1: "CLOSE",
@@ -132,6 +124,13 @@ const deleteQuery = ({ _id, clientId }) => {
   });
 };
 module.exports = {
-    insertquery,getqueries,getQueryById,updateStatusClose,deleteQuery,
-    getAdminDashboardQueries,getUserForQuery,getMentorQueryById,getQueryForMentor
-  };
+  insertquery,
+  getqueries,
+  getQueryById,
+  updateStatusClose,
+  deleteQuery,
+  getAdminDashboardQueries,
+  getUserForQuery,
+  getMentorQueryById,
+  getQueryForMentor,
+};
