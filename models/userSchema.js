@@ -4,9 +4,12 @@ const bcrypt=require("bcryptjs");
 const jwt=require("jsonwebtoken");
 
 const keysecret=process.env.SECRET_KEY;
-
+const Schema = mongoose.Schema;
 
 const userSchema=new mongoose.Schema({
+    userId: {
+        type: Schema.Types.ObjectId,
+      },
     fname:{
         type:String,
         required:true,

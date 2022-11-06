@@ -24,8 +24,12 @@ const createNewQueryValidation = (req, res, next) => {
         subCategory:shortStr.required(),
         description:longStr.required(),
         category:shortStr.required(),
-		sender: shortStr.required(),
-		message: longStr.required(),
+        preferredLanguage:shortStr.required(),
+    
+            from: shortStr.required(),
+            till:shortStr.required() 
+      
+      
 		
 	});
 
@@ -38,21 +42,21 @@ const createNewQueryValidation = (req, res, next) => {
 
 	next();
 };
-const replyQueryMessageValidation = (req, res, next) => {
-	const schema = Joi.object({
-		sender: shortStr.required(),
-		message: longStr.required(),
-	});
+// const replyQueryMessageValidation = (req, res, next) => {
+// 	const schema = Joi.object({
+// 		sender: shortStr.required(),
+// 		message: longStr.required(),
+// 	});
 
-	console.log(req.body);
-	const value = schema.validate(req.body);
+// 	console.log(req.body);
+// 	const value = schema.validate(req.body);
 
-	if (value.error) {
-		return res.json({ status: "error", message: value.error.message });
-	}
+// 	if (value.error) {
+// 		return res.json({ status: "error", message: value.error.message });
+// 	}
 
-	next();
-};
+// 	next();
+// };
 
 // const newUserValidation = (req, res, next) => {
 // 	const schema = Joi.object({
@@ -75,6 +79,6 @@ const replyQueryMessageValidation = (req, res, next) => {
 
 module.exports = {
     createNewQueryValidation,
-    replyQueryMessageValidation
+  
 
 };

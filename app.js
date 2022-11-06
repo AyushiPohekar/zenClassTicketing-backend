@@ -4,6 +4,7 @@ const cookiParser=require("cookie-parser")
 require("./db/conn");
 const usersRouter = require("./routes/users.router");
 const queryRouter = require("./routes/query.router");
+const mentorRouter = require("./routes/mentor.router");
 
 
 const cors = require("cors");
@@ -22,6 +23,7 @@ app.use(cookiParser());
 app.use('/',usersRouter);
 
  app.use('/queries',queryRouter);
+ app.use('/mentor/queries',mentorRouter);
 
 
 app.listen(port,()=>{

@@ -1,6 +1,6 @@
 const authenticate = require("../middleware/authenticate");
 const {QuerySchema } = require("./querySchema");
-
+const{UserSchema}=require('./userSchema')
 const insertquery = (queryObj) => {
   return new Promise((resolve, reject) => {
     try {
@@ -25,6 +25,18 @@ const getqueries = (clientId) => {
     }
   });
 };
+const getAdminDashboardQueries = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      QuerySchema
+        .find({status2:"UNASSIGNED",status1:"OPEN"})
+        .then((data) => resolve(data))
+        .catch((error) => reject(error));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 
 
 const getQueryById = (_id, clientId) => {
@@ -38,18 +50,27 @@ const getQueryById = (_id, clientId) => {
     }
   });
 };
-
-
-const updateStudentReply = ({ _id, message, sender }) => {
+const getMentorQueryById = (_id) => {
   return new Promise((resolve, reject) => {
     try {
-      QuerySchema.findOneAndUpdate(
-        { _id },
+     QuerySchema.find({ _id})
+        .then((data) => resolve(data))
+        .catch((error) => reject(error));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+const getQueryForMentor = ( {_id, clientId} ) => {
+  console.log(_id)
+  console.log(clientId)
+  return new Promise((resolve, reject) => {
+    try {
+   QuerySchema.findOneAndUpdate(
+        { _id, clientId },
+        
         {
-          status1: "OPEN",
-          $push: {
-            conversations: { message, sender },
-          },
+          status2: "ASSIGNED",
         },
         { new: true }
       )
@@ -60,6 +81,25 @@ const updateStudentReply = ({ _id, message, sender }) => {
     }
   });
 };
+
+//get user for particular  query
+
+const getUserForQuery = () => {
+  return new Promise((resolve, reject) => {
+    try {
+    QuerySchema.find().populate("rasiedBy")
+        .then((data) => resolve(data))
+        .catch((error) => reject(error));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+
+
+
+
 
 
 const updateStatusClose = ({ _id, clientId }) => {
@@ -92,6 +132,6 @@ const deleteQuery = ({ _id, clientId }) => {
   });
 };
 module.exports = {
-    insertquery,getqueries,getQueryById,updateStudentReply,updateStatusClose,deleteQuery
-  
+    insertquery,getqueries,getQueryById,updateStatusClose,deleteQuery,
+    getAdminDashboardQueries,getUserForQuery,getMentorQueryById,getQueryForMentor
   };

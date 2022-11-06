@@ -4,6 +4,7 @@ const ObjectId = mongoose.SchemaTypes.ObjectId;
 const QuerySchema = new Schema({
   clientId: {
     type: Schema.Types.ObjectId,
+    ref: "userdb",
   },
   subject: {
     type: String,
@@ -45,31 +46,25 @@ description: {
     default: "UNASSIGNED",
   },
 
-  conversations: [
-    {
-      sender: {
+
+preferredLanguage: {
+    type: String,
+    required: true,
+},
+availableTime:[ {
+    from: {
         type: String,
-        maxlength: 50,
         required: true,
-        default: "",
-      },
-      message: {
-        type: String,
-        maxlength: 1000,
-        required: true,
-        default: "",
-      },
-      msgAt: {
-        type: Date,
-        required: true,
-        default: Date.now(),
-      },
     },
-  ],
+    till: {
+        type: String,
+        required: true,
+    },
+},],
   rasiedBy: {
     type: ObjectId,
     required: true,
-    ref: "userdb",
+    ref:"users",
 },
 
 solution: {
