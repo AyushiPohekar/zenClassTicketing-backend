@@ -1,6 +1,10 @@
 const authenticate = require("../middleware/authenticate");
 const { QuerySchema } = require("./querySchema");
 const { UserSchema } = require("./userSchema");
+
+
+
+
 const insertquery = (queryObj) => {
   return new Promise((resolve, reject) => {
     try {
@@ -13,6 +17,9 @@ const insertquery = (queryObj) => {
     }
   });
 };
+
+
+
 const getqueries = (clientId) => {
   return new Promise((resolve, reject) => {
     try {
@@ -24,17 +31,17 @@ const getqueries = (clientId) => {
     }
   });
 };
-const getAdminDashboardQueries = () => {
-  return new Promise((resolve, reject) => {
-    try {
-      QuerySchema.find({ status2: "UNASSIGNED", status1: "OPEN" })
-        .then((data) => resolve(data))
-        .catch((error) => reject(error));
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
+// const getAdminDashboardQueries = () => {
+//   return new Promise((resolve, reject) => {
+//     try {
+//       QuerySchema.find({ status2: "UNASSIGNED", status1: "OPEN" })
+//         .then((data) => resolve(data))
+//         .catch((error) => reject(error));
+//     } catch (error) {
+//       reject(error);
+//     }
+//   });
+// };
 
 const getQueryById = (_id, clientId) => {
   return new Promise((resolve, reject) => {
@@ -47,17 +54,7 @@ const getQueryById = (_id, clientId) => {
     }
   });
 };
-const getMentorQueryById = (_id) => {
-  return new Promise((resolve, reject) => {
-    try {
-      QuerySchema.find({ _id })
-        .then((data) => resolve(data))
-        .catch((error) => reject(error));
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
+
 const getQueryForMentor = ({ _id, clientId }) => {
   console.log(_id);
   console.log(clientId);
@@ -81,7 +78,7 @@ const getQueryForMentor = ({ _id, clientId }) => {
 
 //get user for particular  query
 
-const getUserForQuery = () => {
+const getMentorQuery = () => {
   return new Promise((resolve, reject) => {
     try {
       QuerySchema.find({ status2: "UNASSIGNED", status1: "OPEN" })
@@ -123,14 +120,28 @@ const deleteQuery = ({ _id, clientId }) => {
     }
   });
 };
+
+const getMentorQueryById = ({_id, clientId}) => {
+  return new Promise((resolve, reject) => {
+    try {
+      QuerySchema.find({ _id, clientId })
+        .then((data) => console.log(data))
+        .catch((error) => reject(error));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+
+
 module.exports = {
   insertquery,
   getqueries,
   getQueryById,
   updateStatusClose,
   deleteQuery,
-  getAdminDashboardQueries,
-  getUserForQuery,
-  getMentorQueryById,
-  getQueryForMentor,
+  getMentorQuery,
+   getQueryForMentor,
+   getMentorQueryById
 };

@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const authenticate = require("../middleware/authenticate");
 const {
-  getAdminDashboardQueries,
-  getUserForQuery,
-  getQueryById,
-  getMentorQueryById,
+
+    getMentorQuery,
+    getMentorQueryById,
+
   getQueryForMentor
 } = require("../models/querymodel");
 
@@ -24,7 +24,7 @@ const {
 router.get("/", async function (req, res) {
     try {
 
-        const result = await getUserForQuery();
+        const result = await getMentorQuery();
          
         return res.json(result);
       } catch (error) {
@@ -32,22 +32,33 @@ router.get("/", async function (req, res) {
       }
     });
 
-router.get("/:_id", authenticate, async (req, res) => {
-  try {
-    const { _id } = req.params;
 
-    const result = await getMentorQueryById(_id);
-    return res.json(result[0]);
-  } catch (error) {
-    res.json({ status: "error", message: error.message });
-  }
-});
+
+    router.get("/:_id", authenticate, async (req, res) => {
+        try {
+          const { _id } = req.params;
+        
+          console.log( _id)
+      
+          const clientId = req.userId;
+          console.log(clientId)
+          const result = await getMentorQueryById({_id, clientId});
+      
+          return res.json(result);
+        } catch (error) {
+          res.json({ status: "error", message: error.message });
+        }
+      });
+
+
+
+
+
+
+
 
 //get particular query for mentor
-
-
-
-  router.patch("/myqueries/:_id", authenticate, async (req, res) => {
+router.patch("/myqueries/:_id", authenticate, async (req, res) => {
     try {
       const { _id } = req.params;
     
