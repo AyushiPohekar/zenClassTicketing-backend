@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 const authenticate = require("../middleware/authenticate");
 const {
-
+    updateStatusCloseFormentor,
     getMentorQuery,
     getMentorQueryById,
 
   getQueryForMentor
 } = require("../models/querymodel");
+const bcrypt = require("bcryptjs");
 
 //get queries which is open and unassigned.
 // router.get("/", async function (req, res) {
@@ -50,7 +51,27 @@ router.get("/", async function (req, res) {
         }
       });
 
+//update ticket for mentor and close
 
+router.patch("/close-query/:_id", authenticate, async (req, res) => {
+    try {
+      const { _id } = req.params;
+      console.log(_id)
+      const clientId = req.userId;
+       console.log(clientId )
+      const result = await updateStatusCloseFormentor({ _id, clientId });
+  
+      if (result._id) {
+        return res.json(result);
+      }
+      res.json({
+        status: "error",
+        message: "Unable to update the ticket",
+      });
+    } catch (error) {
+      res.json({ status: "error", message: error.message });
+    }
+  });
 
 
 

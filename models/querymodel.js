@@ -109,6 +109,29 @@ const updateStatusClose = ({ _id, clientId }) => {
   });
 };
 
+
+const updateStatusCloseFormentor=({ _id, clientId }) => {
+  console.log("outsidePromise",_id)
+  return new Promise((resolve, reject) => {
+    try {
+      console.log("insidePromise",_id)
+      QuerySchema.findByIdAndUpdate(
+        
+        { _id, clientId },
+        {
+          status1: "CLOSE",
+        },
+        { new: true }
+      )
+        .then((data) => resolve(data))
+        .catch((error) => reject(error));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+
 const deleteQuery = ({ _id, clientId }) => {
   return new Promise((resolve, reject) => {
     try {
@@ -143,5 +166,6 @@ module.exports = {
   deleteQuery,
   getMentorQuery,
    getQueryForMentor,
-   getMentorQueryById
+   getMentorQueryById,
+   updateStatusCloseFormentor
 };
