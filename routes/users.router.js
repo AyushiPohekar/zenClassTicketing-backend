@@ -114,7 +114,7 @@ router.post("/login", async (req, res) => {
     const userValid = await userdb.findOne({ email: email });
     if (userValid) {
       const isMatch = await bcrypt.compare(password, userValid.password);
-      console.log(userValid.role)
+      // console.log(userValid.role)
       if (!isMatch ) {
         res.status(422).json({ error: "invalid details" });
       } else if(userValid.role!=='student'){

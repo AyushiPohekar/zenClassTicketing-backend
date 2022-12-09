@@ -56,8 +56,8 @@ const getQueryById = (_id, clientId) => {
 };
 
 const getQueryForMentor = ({ _id, clientId }) => {
-  console.log(_id);
-  console.log(clientId);
+  //console.log(_id);
+  //console.log(clientId);
   return new Promise((resolve, reject) => {
     try {
       QuerySchema.findOneAndUpdate(
@@ -148,7 +148,7 @@ const getMentorQueryById = ({_id, clientId}) => {
   return new Promise((resolve, reject) => {
     try {
       QuerySchema.find({ _id, clientId })
-        .then((data) => console.log(data))
+        .then((data) => resolve(data))
         .catch((error) => reject(error));
     } catch (error) {
       reject(error);

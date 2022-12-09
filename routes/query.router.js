@@ -29,7 +29,7 @@ router.post(
       from,
       till,
     } = req.body;
-    console.log(req.userId);
+    // console.log(req.userId);
 
     const userId = req.userId;
     if (!subject || !category || !description) {
@@ -66,7 +66,7 @@ router.post(
         status: "error",
         message: "Unable to create the ticket , please try again later",
       });
-      console.log(res.json);
+      //console.log(res.json);
     } catch (error) {
       res.json({ status: "error", message: error.message });
     }
@@ -90,7 +90,7 @@ router.get("/:_id", authenticate, async (req, res) => {
   try {
     const { _id } = req.params;
   
-    console.log( _id)
+    //console.log( _id)
 
     const clientId = req.userId;
     const result = await getQueryById(_id, clientId);
