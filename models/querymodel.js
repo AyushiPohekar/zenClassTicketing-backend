@@ -55,13 +55,46 @@ const getQueryById = (_id, clientId) => {
   });
 };
 
-const getQueryForMentor = ({ _id, clientId }) => {
+const updateStatusClose = ({ _id, clientId }) => {
+  return new Promise((resolve, reject) => {
+    try {
+      QuerySchema.findOneAndUpdate(
+        { _id, clientId },
+        {
+          status1: "CLOSE",
+        },
+        { new: true }
+      )
+        .then((data) => resolve(data))
+        .catch((error) => reject(error));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const deleteQuery = ({ _id, clientId }) => {
+  return new Promise((resolve, reject) => {
+    try {
+      QuerySchema.findOneAndDelete({ _id, clientId })
+        .then((data) => resolve(data))
+        .catch((error) => reject(error));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+
+//MENTOR
+
+const UpdateQueryForMentor = ({ _id}) => {
   //console.log(_id);
   //console.log(clientId);
   return new Promise((resolve, reject) => {
     try {
       QuerySchema.findOneAndUpdate(
-        { _id, clientId },
+        { _id },
 
         {
           status2: "ASSIGNED",
@@ -91,23 +124,7 @@ const getMentorQuery = () => {
   });
 };
 
-const updateStatusClose = ({ _id, clientId }) => {
-  return new Promise((resolve, reject) => {
-    try {
-      QuerySchema.findOneAndUpdate(
-        { _id, clientId },
-        {
-          status1: "CLOSE",
-        },
-        { new: true }
-      )
-        .then((data) => resolve(data))
-        .catch((error) => reject(error));
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
+
 
 
 const updateStatusCloseFormentor=({ _id, clientId }) => {
@@ -132,22 +149,13 @@ const updateStatusCloseFormentor=({ _id, clientId }) => {
 };
 
 
-const deleteQuery = ({ _id, clientId }) => {
-  return new Promise((resolve, reject) => {
-    try {
-      QuerySchema.findOneAndDelete({ _id, clientId })
-        .then((data) => resolve(data))
-        .catch((error) => reject(error));
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
 
-const getMentorQueryById = ({_id, clientId}) => {
+
+const getMentorQueryById = ({_id}) => {
   return new Promise((resolve, reject) => {
+   
     try {
-      QuerySchema.find({ _id, clientId })
+      QuerySchema.findOne({ _id })
         .then((data) => resolve(data))
         .catch((error) => reject(error));
     } catch (error) {
@@ -165,7 +173,7 @@ module.exports = {
   updateStatusClose,
   deleteQuery,
   getMentorQuery,
-   getQueryForMentor,
+  UpdateQueryForMentor,
    getMentorQueryById,
    updateStatusCloseFormentor
 };

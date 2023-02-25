@@ -28,7 +28,7 @@ router.post("/register", async (req, res) => {
   const { fname, email, password, cpassword} = req.body;
 
   if (!fname || !email || !password || !cpassword) {
-    res.status(422).json({ error: "fill all the details" });
+    res.status(422).json({status:422, error: "fill all the details" });
   }
 
   try {
@@ -67,7 +67,7 @@ router.post("/admin/register", async (req, res) => {
   const { fname, email, password, cpassword } = req.body;
 
   if (!fname || !email || !password || !cpassword) {
-    res.status(422).json({ error: "fill all the details" });
+    res.status(422).json({ status:422,error: "fill all the details" });
   }
 
   try {

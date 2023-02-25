@@ -5,8 +5,7 @@ const {
     updateStatusCloseFormentor,
     getMentorQuery,
     getMentorQueryById,
-
-  getQueryForMentor
+    UpdateQueryForMentor
 } = require("../models/querymodel");
 const bcrypt = require("bcryptjs");
 
@@ -39,11 +38,11 @@ router.get("/", async function (req, res) {
         try {
           const { _id } = req.params;
         
-          //console.log( _id)
+         // console.log( _id)
       
           const clientId = req.userId;
-          //console.log(clientId)
-          const result = await getMentorQueryById({_id, clientId});
+          console.log(clientId)
+          const result = await getMentorQueryById({_id});
       
           return res.json(result);
         } catch (error) {
@@ -78,14 +77,14 @@ router.patch("/close-query/:_id", authenticate, async (req, res) => {
 
 
 
-//get particular query for mentor
+//update statusassigned  for particular mentorquery
 router.patch("/myqueries/:_id", authenticate, async (req, res) => {
     try {
       const { _id } = req.params;
     
       const clientId = req.userId;
    
-    const result = await getQueryForMentor({ _id, clientId });
+    const result = await UpdateQueryForMentor({ _id });
     //   const result = await getQueryForMentor({ '63679182e6bb57f800336942', '6361118d7153d286dab725a9' });
       //console.log(result)
       if (result._id) {
@@ -99,5 +98,7 @@ router.patch("/myqueries/:_id", authenticate, async (req, res) => {
       res.json({ status: "error", message: error.message });
     }
   });
+
+
 
 module.exports = router;
