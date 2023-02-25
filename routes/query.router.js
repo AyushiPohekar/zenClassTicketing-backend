@@ -51,7 +51,7 @@ router.post(
           },
         ],
         rasiedBy: userId,
-      }
+      };
 
       const result = await insertquery(queryObj);
 
@@ -89,7 +89,7 @@ router.get("/", authenticate, async (req, res) => {
 router.get("/:_id", authenticate, async (req, res) => {
   try {
     const { _id } = req.params;
-  
+
     //console.log( _id)
 
     const clientId = req.userId;
