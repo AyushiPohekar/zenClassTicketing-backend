@@ -51,7 +51,7 @@ preferredLanguage: {
     type: String,
     required: true,
 },
-availableTime:[ {
+availableTime: {
     from: {
         type: String,
         required: true,
@@ -60,7 +60,7 @@ availableTime:[ {
         type: String,
         required: true,
     },
-},],
+},
   rasiedBy: {
     type: ObjectId,
     required: true,
